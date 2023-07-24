@@ -1,17 +1,13 @@
 /* eslint-disable no-unused-expressions */
 import 'mocha';
-import * as dotenv from 'dotenv';
 import {getWeatherV2Description, OpenWeatherV2, WeatherDataV2, weatherDataV2Schema} from '../src/';
 import {expect} from 'chai';
 import {ExpireCache} from '@avanio/expire-cache';
 import {Result} from 'mharj-result';
 import {unitTestApiV2} from './lib/unitTestApi';
 
-dotenv.config();
-
 let weather: OpenWeatherV2;
 const cache = new ExpireCache<WeatherDataV2>(undefined, undefined, 900000); // 15 minutes in cache
-
 const currentId = 2643743; // London
 
 describe('OpenWeatherV2', () => {
@@ -58,7 +54,7 @@ describe('OpenWeatherV2', () => {
 			expect(res.ok()).to.be.an('object');
 			expect(() => weatherDataV2Schema.parse(res.ok())).to.not.throw();
 		});
-		it('should get cachbe data with getWeatherByLatLon', async () => {
+		it('should get cache data with getWeatherByLatLon', async () => {
 			const res: Result<WeatherDataV2, DOMException | TypeError> = await weather.getWeatherByLatLon(51.5049899, -0.1223291);
 			expect(res.ok()).to.be.an('object');
 			expect(() => weatherDataV2Schema.parse(res.ok())).to.not.throw();
