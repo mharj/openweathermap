@@ -2,6 +2,6 @@
 
 Open Weather Map API client for TypeScript.
 
-Currently supports v2 API only (/data/2.5/weather)
+Currently supports v2 API only (/data/2.5/weather end-point)
 
-## [Documentation](https://mharj.github.io/ts-openweathermap/)
+## [Documentation](https://mharj.github.io/openweathermap/)
