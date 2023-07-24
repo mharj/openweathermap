@@ -1,0 +1,89 @@
+{
+  "name": "ts-openweathermap",
+  "version": "0.0.1",
+  "description": "Open Weather API Client",
+  "main": "./dist/index.js",
+  "scripts": {
+    "doc": "typedoc",
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "test": "nyc mocha",
+    "coverage": "nyc report --reporter=lcovonly",
+    "lint": "eslint src"
+  },
+  "files": [
+    "dist"
+  ],
+  "mocha": {
+    "exit": true,
+    "extension": [
+      "ts",
+      "js"
+    ],
+    "recursive": true,
+    "require": [
+      "ts-node/register",
+      "source-map-support/register"
+    ],
+    "reporters": [
+      "spec",
+      "mocha-junit-reporter"
+    ]
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "include": [
+      "src"
+    ],
+    "reporter": [
+      "text",
+      "html"
+    ],
+    "all": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mharj/ts-openweather.git"
+  },
+  "keywords": [
+    "weather",
+    "api",
+    "client"
+  ],
+  "author": "mharj",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mharj/ts-openweather/issues"
+  },
+  "homepage": "https://github.com/mharj/ts-openweather#readme",
+  "dependencies": {
+    "@avanio/expire-cache": "^0.2.0",
+    "mharj-result": "^0.4.5",
+    "tslib": "^2.6.0",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.5",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^18.17.0",
+    "@typescript-eslint/eslint-plugin": "^6.1.0",
+    "@typescript-eslint/parser": "^6.1.0",
+    "chai": "^4.3.7",
+    "dotenv": "^16.3.1",
+    "eslint": "^8.45.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-deprecation": "^1.4.1",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-sonarjs": "^0.19.0",
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0",
+    "prettier": "^3.0.0",
+    "source-map-support": "^0.5.21",
+    "ts-node": "^10.9.1",
+    "typedoc": "^0.24.8",
+    "typedoc-plugin-zod": "^1.0.2"
+  }
+}
