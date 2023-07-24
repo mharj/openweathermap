@@ -1,5 +1,5 @@
 {
-  "name": "ts-openweathermap",
+  "name": "@mharj/openweathermap",
   "version": "0.0.1",
   "description": "Open Weather API Client",
   "main": "./dist/index.js",
