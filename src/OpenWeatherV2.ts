@@ -54,7 +54,7 @@ const defaultImplementation: IOpenWeatherV2 = {
 		const res = result.ok();
 		if (!res.ok) {
 			if (isJson(res)) {
-				const data = res.json();
+				const data: unknown = await res.json();
 				if (isOpenWeatherError(data)) {
 					return Err(new TypeError(`OpenWeatherV2 error: ${data.message} from ${logUrl}`));
 				}
@@ -64,7 +64,11 @@ const defaultImplementation: IOpenWeatherV2 = {
 		if (!isJson(res)) {
 			return Err(new TypeError(`OpenWeatherV2 response is not json payload from ${logUrl}`));
 		}
-		const data = await safeAsyncResult<unknown, SyntaxError>(res.json());
+		const jsonResult = await safeAsyncResult<unknown, SyntaxError>(res.json());
+		if (!jsonResult.isOk) {
+			return Err(jsonResult.err());
+		}
+		const data = jsonResult.ok();
 		assertWeatherDataV2(data);
 		return Ok<WeatherDataV2, SyntaxError | TypeError>(data);
 	},
