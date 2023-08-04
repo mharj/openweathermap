@@ -6,6 +6,15 @@ import type {IOpenWeatherV2} from './interfaces/IOpenWeatherV2';
 
 const fetchResult = safeAsyncResultBuilder<Parameters<typeof fetch>, Response, SyntaxError | TypeError>(fetch);
 
+function isJson(response: Response): boolean {
+	const contentType = response.headers.get('content-type');
+	return (contentType && contentType.startsWith('application/json')) || false;
+}
+
+function isOpenWeatherError(data: unknown): data is {cod: string; message: string} {
+	return typeof data === 'object' && data !== null && 'cod' in data && 'message' in data;
+}
+
 /**
  * Open Weather V2 API Common Options
  * @default {lang: 'en', units: 'standard'} in API
@@ -23,15 +32,37 @@ export type OpenWeatherV2CommonOptions = {
 	units?: 'standard' | 'metric' | 'imperial';
 };
 
+const basePath = 'https://api.openweathermap.org/data/2.5/weather';
+
+function buildUrl(params: URLSearchParams): string {
+	return `${basePath}?${params.toString()}`;
+}
+
+function buildLogUrl(params: URLSearchParams): string {
+	const logParams = new URLSearchParams(params);
+	logParams.set('appid', '***');
+	return buildUrl(logParams);
+}
+
 const defaultImplementation: IOpenWeatherV2 = {
 	dataWeatherApi: async (params: URLSearchParams): Promise<Result<WeatherDataV2, SyntaxError | TypeError>> => {
-		const result = await fetchResult(`https://api.openweathermap.org/data/2.5/weather?${params.toString()}`);
+		const logUrl = buildLogUrl(params);
+		const result = await fetchResult(buildUrl(params));
 		if (!result.isOk) {
 			return Err(result.err());
 		}
 		const res = result.ok();
 		if (!res.ok) {
-			return Err(new TypeError(`OpenWeatherV2 http error: ${res.status} ${res.statusText}`));
+			if (isJson(res)) {
+				const data = res.json();
+				if (isOpenWeatherError(data)) {
+					return Err(new TypeError(`OpenWeatherV2 error: ${data.message} from ${logUrl}`));
+				}
+			}
+			return Err(new TypeError(`OpenWeatherV2 http error: ${res.status} ${res.statusText} from ${logUrl}`));
+		}
+		if (!isJson(res)) {
+			return Err(new TypeError(`OpenWeatherV2 response is not json payload from ${logUrl}`));
 		}
 		const data = await safeAsyncResult<unknown, SyntaxError>(res.json());
 		assertWeatherDataV2(data);
