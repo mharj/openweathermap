@@ -1,8 +1,10 @@
 import {assertWeatherDataV2, CountryCode, LangCode, Loadable, WeatherDataV2} from './types';
-import {Err, Ok, Result} from 'mharj-result';
+import {Err, Ok, Result, safeAsyncResult, safeAsyncResultBuilder} from 'mharj-result';
 import {fetchErrorWrapper} from './lib/fetchUtils';
 import type {ICacheOrAsync} from '@avanio/expire-cache';
 import type {IOpenWeatherV2} from './interfaces/IOpenWeatherV2';
+
+const fetchResult = safeAsyncResultBuilder<Parameters<typeof fetch>, Response, SyntaxError | TypeError>(fetch);
 
 /**
  * Open Weather V2 API Common Options
@@ -22,14 +24,18 @@ export type OpenWeatherV2CommonOptions = {
 };
 
 const defaultImplementation: IOpenWeatherV2 = {
-	dataWeatherApi: async (params: URLSearchParams): Promise<WeatherDataV2> => {
-		const resp = await fetch(`https://api.openweathermap.org/data/2.5/weather?${params.toString()}`);
-		if (!resp.ok) {
-			throw new Error(resp.statusText);
+	dataWeatherApi: async (params: URLSearchParams): Promise<Result<WeatherDataV2, SyntaxError | TypeError>> => {
+		const result = await fetchResult(`https://api.openweathermap.org/data/2.5/weather?${params.toString()}`);
+		if (!result.isOk) {
+			return Err(result.err());
 		}
-		const data = (await resp.json()) as unknown;
+		const res = result.ok();
+		if (!res.ok) {
+			return Err(new TypeError(`OpenWeatherV2 http error: ${res.status} ${res.statusText}`));
+		}
+		const data = await safeAsyncResult<unknown, SyntaxError>(res.json());
 		assertWeatherDataV2(data);
-		return data;
+		return Ok<WeatherDataV2, SyntaxError | TypeError>(data);
 	},
 };
 
@@ -183,7 +189,8 @@ export class OpenWeatherV2 {
 	}
 
 	private async handleFetch(cacheKey: string, params: URLSearchParams, opts: OpenWeatherV2CommonOptions): Promise<WeatherDataV2> {
-		const data = await this.apiHandler.dataWeatherApi(params);
+		const dataApiResult = await this.apiHandler.dataWeatherApi(params);
+		const data: WeatherDataV2 = dataApiResult.unwrap();
 		assertWeatherDataV2(data);
 		if (this.cache) {
 			await this.cache.set(cacheKey, data);

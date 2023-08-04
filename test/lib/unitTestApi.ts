@@ -1,8 +1,10 @@
 /* eslint-disable sort-keys */
-import {assertWeatherDataV2} from '../../src/types/v2';
+import {assertWeatherDataV2, WeatherDataV2} from '../../src/types/v2';
+import {Err, Ok} from 'mharj-result';
 import {IOpenWeatherV2} from '../../src/interfaces/IOpenWeatherV2';
+import {readFile} from 'fs/promises';
 
-const data = {
+export const unitTestData = {
 	coord: {lon: -0.1257, lat: 51.5085},
 	weather: [
 		{
@@ -39,8 +41,18 @@ const data = {
 };
 
 export const unitTestApiV2: IOpenWeatherV2 = {
-	dataWeatherApi: async () => {
-		assertWeatherDataV2(data);
-		return Promise.resolve(data);
+	dataWeatherApi: async (params: URLSearchParams) => {
+		const id = params.get('id');
+		if (!id) {
+			assertWeatherDataV2(unitTestData);
+			return Ok<WeatherDataV2, SyntaxError | TypeError>(unitTestData);
+		}
+		try {
+			const data: unknown = JSON.parse((await readFile(`./test/lib/data/${id}.json`, {encoding: 'utf-8'})).toString());
+			assertWeatherDataV2(data);
+			return Ok<WeatherDataV2, SyntaxError | TypeError>(data);
+		} catch (err) {
+			return Err(err instanceof SyntaxError ? err : new SyntaxError('unknown error'));
+		}
 	},
 };

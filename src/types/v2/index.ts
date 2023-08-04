@@ -33,13 +33,13 @@ const windSchema = z.object({
 });
 
 const rainSchema = z.object({
-	'1h': z.number(),
-	'3h': z.number(),
+	'1h': z.number().optional(),
+	'3h': z.number().optional(),
 });
 
 const snowSchema = z.object({
-	'1h': z.number(),
-	'3h': z.number(),
+	'1h': z.number().optional(),
+	'3h': z.number().optional(),
 });
 
 const sysSchema = z.object({

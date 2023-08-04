@@ -1,0 +1,43 @@
+{
+    "coord": {
+        "lon": -82.383,
+        "lat": 23.133
+    },
+    "weather": [
+        {
+            "id": 801,
+            "main": "Clouds",
+            "description": "few clouds",
+            "icon": "02n"
+        }
+    ],
+    "base": "stations",
+    "main": {
+        "temp": 298.39,
+        "feels_like": 299.58,
+        "temp_min": 298.39,
+        "temp_max": 298.44,
+        "pressure": 1017,
+        "humidity": 100
+    },
+    "visibility": 9000,
+    "wind": {
+        "speed": 1.03,
+        "deg": 110
+    },
+    "clouds": {
+        "all": 20
+    },
+    "dt": 1691126050,
+    "sys": {
+        "type": 1,
+        "id": 7236,
+        "country": "CU",
+        "sunrise": 1691146877,
+        "sunset": 1691194197
+    },
+    "timezone": -14400,
+    "id": 3553478,
+    "name": "Havana",
+    "cod": 200
+}
