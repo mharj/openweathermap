@@ -1,6 +1,6 @@
 {
   "name": "@mharj/openweathermap",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Open Weather API Client",
   "main": "./dist/index.js",
   "scripts": {
