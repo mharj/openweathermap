@@ -101,6 +101,7 @@ export class OpenWeatherV2 {
 	private cache: ICacheOrAsync<WeatherDataV2> | undefined;
 	private loadableApiKey: Loadable<string>;
 	private apiHandler: IOpenWeatherV2;
+	private fetchPromiseMap = new Map<string, Promise<Result<WeatherDataV2, DOMException | TypeError>>>();
 	/**
 	 * OpenWeatherV2 constructor
 	 * @param {Loadable<string>} loadableApiKey - Loadable API key
@@ -224,7 +225,15 @@ export class OpenWeatherV2 {
 	}
 
 	private async handleFetch(cacheKey: string, params: URLSearchParams, opts: OpenWeatherV2CommonOptions): Promise<WeatherDataV2> {
-		const dataApiResult = await this.apiHandler.dataWeatherApi(params);
+		// allow only one fetch per cacheKey until it is resolved
+		let promiseResult = this.fetchPromiseMap.get(cacheKey);
+		if (!promiseResult) {
+			promiseResult = this.apiHandler.dataWeatherApi(params);
+			this.fetchPromiseMap.set(cacheKey, promiseResult);
+			await promiseResult;
+			this.fetchPromiseMap.delete(cacheKey); // clear promise from map
+		}
+		const dataApiResult = await promiseResult;
 		const data: WeatherDataV2 = dataApiResult.unwrap();
 		assertWeatherDataV2(data);
 		if (this.cache) {

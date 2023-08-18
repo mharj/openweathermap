@@ -44,11 +44,11 @@ const snowSchema = z.object({
 
 const sysSchema = z.object({
 	country: z.string(),
-	id: z.number(),
+	id: z.number().optional(),
 	message: z.number().optional(),
 	sunrise: z.number(),
 	sunset: z.number(),
-	type: z.number(),
+	type: z.number().optional(),
 });
 
 /**
