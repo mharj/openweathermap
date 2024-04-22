@@ -1,6 +1,6 @@
 /* eslint-disable sort-keys */
 import {assertWeatherDataV2, WeatherDataV2} from '../../src/types/v2';
-import {Err, Ok} from 'mharj-result';
+import {Err, Ok} from '@luolapeikko/result-option';
 import {IOpenWeatherV2} from '../../src/interfaces/IOpenWeatherV2';
 import {readFile} from 'fs/promises';
 

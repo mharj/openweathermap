@@ -1,4 +1,4 @@
-import {Option, undefinedOptionWrap} from 'mharj-result';
+import {Option, undefinedOptionWrap} from '@luolapeikko/result-option';
 import {z} from 'zod';
 
 /**

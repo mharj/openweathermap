@@ -1,5 +1,5 @@
 import {assertWeatherDataV2, CountryCode, LangCode, Loadable, WeatherDataV2} from './types';
-import {Err, Ok, Result, safeAsyncResult, safeAsyncResultBuilder} from 'mharj-result';
+import {Err, Ok, Result, safeAsyncResult, safeAsyncResultBuilder} from '@luolapeikko/result-option';
 import {fetchErrorWrapper} from './lib/fetchUtils';
 import type {ICacheOrAsync} from '@avanio/expire-cache';
 import type {IOpenWeatherV2} from './interfaces/IOpenWeatherV2';

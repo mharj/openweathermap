@@ -4,7 +4,7 @@ import {OpenWeatherV2, WeatherDataV2, weatherDataV2Schema} from '../src/';
 import {unitTestApiV2, unitTestData} from './lib/unitTestApi';
 import {expect} from 'chai';
 import {ExpireCache} from '@avanio/expire-cache';
-import {Result} from 'mharj-result';
+import {Result} from '@luolapeikko/result-option';
 
 let weather: OpenWeatherV2;
 const cache = new ExpireCache<WeatherDataV2>(undefined, undefined, 900000); // 15 minutes in cache

@@ -1,4 +1,4 @@
-import {Result} from 'mharj-result';
+import {Result} from '@luolapeikko/result-option';
 import {WeatherDataV2} from '../types/v2';
 
 /**
