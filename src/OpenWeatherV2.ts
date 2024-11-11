@@ -1,10 +1,17 @@
-import {assertWeatherDataV2, CountryCode, LangCode, Loadable, WeatherDataV2} from './types';
-import {Err, Ok, Result, safeAsyncResult, safeAsyncResultBuilder} from '@luolapeikko/result-option';
+import {assertWeatherDataV2, type CountryCode, type LangCode, type Loadable, type WeatherDataV2} from './types';
+import {Err, type IResult, Ok, safeAsyncResult, safeAsyncResultBuilder} from '@luolapeikko/result-option';
 import {fetchErrorWrapper} from './lib/fetchUtils';
-import type {ICacheOrAsync} from '@avanio/expire-cache';
+import {type IAsyncCache} from '@luolapeikko/cache-types';
 import type {IOpenWeatherV2} from './interfaces/IOpenWeatherV2';
 
 const fetchResult = safeAsyncResultBuilder<Parameters<typeof fetch>, Response, SyntaxError | TypeError>(fetch);
+
+function toParams(data: Record<string, string | number | boolean>): Record<string, string> {
+	return Object.entries(data).reduce<Record<string, string>>((acc, [key, value]) => {
+		acc[key] = String(value);
+		return acc;
+	}, {});
+}
 
 function isJson(response: Response): boolean {
 	const contentType = response.headers.get('content-type');
@@ -45,7 +52,7 @@ function buildLogUrl(params: URLSearchParams): string {
 }
 
 const defaultImplementation: IOpenWeatherV2 = {
-	dataWeatherApi: async (params: URLSearchParams): Promise<Result<WeatherDataV2, SyntaxError | TypeError>> => {
+	dataWeatherApi: async (params: URLSearchParams): Promise<IResult<WeatherDataV2, SyntaxError | TypeError>> => {
 		const logUrl = buildLogUrl(params);
 		const result = await fetchResult(buildUrl(params));
 		if (!result.isOk) {
@@ -98,17 +105,17 @@ const defaultImplementation: IOpenWeatherV2 = {
  * }
  */
 export class OpenWeatherV2 {
-	private cache: ICacheOrAsync<WeatherDataV2> | undefined;
+	private cache: IAsyncCache<WeatherDataV2> | undefined;
 	private loadableApiKey: Loadable<string>;
 	private apiHandler: IOpenWeatherV2;
-	private fetchPromiseMap = new Map<string, Promise<Result<WeatherDataV2, DOMException | TypeError>>>();
+	private fetchPromiseMap = new Map<string, Promise<IResult<WeatherDataV2, DOMException | TypeError>>>();
 	/**
 	 * OpenWeatherV2 constructor
 	 * @param {Loadable<string>} loadableApiKey - Loadable API key
 	 * @param {ICacheOrAsync<WeatherDataV2>=} cache - optional async cache implementation
 	 * @param {IOpenWeatherV2=} apiHandler - optional API handler implementation for mocking
 	 */
-	constructor(loadableApiKey: Loadable<string>, cache?: ICacheOrAsync<WeatherDataV2>, apiHandler: IOpenWeatherV2 = defaultImplementation) {
+	constructor(loadableApiKey: Loadable<string>, cache?: IAsyncCache<WeatherDataV2>, apiHandler: IOpenWeatherV2 = defaultImplementation) {
 		this.loadableApiKey = loadableApiKey;
 		this.cache = cache;
 		this.apiHandler = apiHandler;
@@ -127,7 +134,7 @@ export class OpenWeatherV2 {
 	 *   const error: DOMException | TypeError = result.err();
 	 * }
 	 */
-	public async getWeatherById(id: number, opts: OpenWeatherV2CommonOptions = {}): Promise<Result<WeatherDataV2, DOMException | TypeError>> {
+	public async getWeatherById(id: number, opts: OpenWeatherV2CommonOptions = {}): Promise<IResult<WeatherDataV2, DOMException | TypeError>> {
 		try {
 			const cacheKey = this.buildBaseCacheKey(`id:${id}`, opts);
 			let cacheEntry = this.cache && (await this.cache.get(cacheKey));
@@ -160,7 +167,7 @@ export class OpenWeatherV2 {
 		city: string,
 		countryCode?: CountryCode,
 		opts: OpenWeatherV2CommonOptions = {},
-	): Promise<Result<WeatherDataV2, DOMException | TypeError>> {
+	): Promise<IResult<WeatherDataV2, DOMException | TypeError>> {
 		try {
 			const cacheKey = this.buildBaseCacheKey(`q:${city}:${countryCode}`, opts);
 			let cacheEntry = this.cache && (await this.cache.get(cacheKey));
@@ -189,7 +196,7 @@ export class OpenWeatherV2 {
 	 *   const error: DOMException | TypeError = result.err();
 	 * }
 	 */
-	public async getWeatherByLatLon(lat: number, lon: number, opts: OpenWeatherV2CommonOptions = {}): Promise<Result<WeatherDataV2, DOMException | TypeError>> {
+	public async getWeatherByLatLon(lat: number, lon: number, opts: OpenWeatherV2CommonOptions = {}): Promise<IResult<WeatherDataV2, DOMException | TypeError>> {
 		try {
 			const cacheKey = this.buildBaseCacheKey(`latlon:${lat}:${lon}`, opts);
 			let cacheEntry = this.cache && (await this.cache.get(cacheKey));
@@ -205,11 +212,9 @@ export class OpenWeatherV2 {
 		}
 	}
 
-	private async buildBaseParams({lang, units}: OpenWeatherV2CommonOptions): Promise<URLSearchParams> {
+	private async buildBaseParams(options: OpenWeatherV2CommonOptions): Promise<URLSearchParams> {
 		const apiKey = await (typeof this.loadableApiKey === 'function' ? this.loadableApiKey() : this.loadableApiKey);
-		const params = new URLSearchParams();
-		lang && params.append('lang', lang);
-		units && params.append('units', units);
+		const params = new URLSearchParams(toParams(options));
 		params.append('appid', apiKey);
 		return params;
 	}

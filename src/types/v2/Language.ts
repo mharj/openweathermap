@@ -1,5 +1,5 @@
 import {z} from 'zod';
-const langCode = [
+export const langCodes = [
 	'af',
 	'al',
 	'ar',
@@ -47,5 +47,5 @@ const langCode = [
 	'zh_tw',
 	'zu',
 ] as const;
-const langCodeSchema = z.enum(langCode);
+export const langCodeSchema = z.enum(langCodes);
 export type LangCode = z.infer<typeof langCodeSchema>;

@@ -1,6 +1,5 @@
 /* eslint-disable sonarjs/no-duplicate-string */
-import 'mocha';
-import {expect} from 'chai';
+import {describe, expect, it} from 'vitest';
 import {fetchErrorWrapper} from '../src/';
 
 describe('fetchErrorWrapper', () => {

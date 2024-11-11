@@ -1,4 +1,4 @@
-import {Option, undefinedOptionWrap} from '@luolapeikko/result-option';
+import {type IOption, undefinedOptionWrap} from '@luolapeikko/result-option';
 import {z} from 'zod';
 
 /**
@@ -329,6 +329,6 @@ export const weatherIdSchema = z.custom<WeatherID>((val) => {
  *   );
  * }
  */
-export function getWeatherV2Description(id: WeatherID | undefined): Option<WeatherDescription> {
+export function getWeatherV2Description(id: WeatherID | undefined): IOption<WeatherDescription> {
 	return undefinedOptionWrap(weatherIdGroup.find((x) => x.id === id)?.description);
 }
