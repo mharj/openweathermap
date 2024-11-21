@@ -23,35 +23,6 @@
   "files": [
     "dist"
   ],
-  "mocha": {
-    "exit": true,
-    "extension": [
-      "ts",
-      "js"
-    ],
-    "recursive": true,
-    "require": [
-      "ts-node/register",
-      "source-map-support/register"
-    ],
-    "reporters": [
-      "spec",
-      "mocha-junit-reporter"
-    ]
-  },
-  "nyc": {
-    "extension": [
-      ".ts"
-    ],
-    "include": [
-      "src"
-    ],
-    "reporter": [
-      "text",
-      "html"
-    ],
-    "all": true
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mharj/ts-openweather.git"
@@ -67,19 +38,17 @@
     "url": "https://github.com/mharj/ts-openweather/issues"
   },
   "homepage": "https://github.com/mharj/ts-openweather#readme",
-  "dependencies": {
-    "@luolapeikko/cache-types": "^0.0.7",
-    "@luolapeikko/result-option": "^1.0.3",
-    "zod": "^3.23.8"
-  },
   "devDependencies": {
     "@avanio/expire-cache": "^0.6.3",
-    "@stylistic/eslint-plugin": "^2.10.1",
-    "@stylistic/eslint-plugin-ts": "^2.10.1",
+    "@luolapeikko/cache-types": "^0.0.7",
+    "@luolapeikko/result-option": "^1.0.3",
+    "@luolapeikko/ts-common": "^0.2.4",
+    "@stylistic/eslint-plugin": "^2.11.0",
+    "@stylistic/eslint-plugin-ts": "^2.11.0",
     "@types/node": "^18.19.64",
-    "@typescript-eslint/eslint-plugin": "^8.13.0",
-    "@typescript-eslint/parser": "^8.13.0",
-    "@vitest/coverage-v8": "^2.1.4",
+    "@typescript-eslint/eslint-plugin": "^8.15.0",
+    "@typescript-eslint/parser": "^8.15.0",
+    "@vitest/coverage-v8": "^2.1.5",
     "c8": "^10.1.2",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",
@@ -93,7 +62,15 @@
     "tsup": "^8.3.5",
     "typedoc": "^0.26.11",
     "typedoc-plugin-zod": "^1.2.1",
-    "vite": "^5.4.10",
-    "vitest": "^2.1.4"
-  }
+    "vite": "^5.4.11",
+    "vitest": "^2.1.4",
+    "zod": "^3.23.8"
+  },
+  "peerDependencies": {
+    "@luolapeikko/cache-types": "^0.0",
+    "@luolapeikko/result-option": "^1",
+    "@luolapeikko/ts-common": "^0.0 || ^0.1 || ^0.2",
+    "zod": "^3"
+  },
+  "packageManager": "pnpm@9.14.2+sha256.06e65a4965baff6d6097f9c8f75c35f6d420974dbc03d775009056a69edfd271"
 }

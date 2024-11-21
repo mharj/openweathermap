@@ -1,43 +1,45 @@
 {
-    "coord": {
-        "lon": -82.383,
-        "lat": 23.133
-    },
-    "weather": [
-        {
-            "id": 801,
-            "main": "Clouds",
-            "description": "few clouds",
-            "icon": "02n"
-        }
-    ],
-    "base": "stations",
-    "main": {
-        "temp": 298.39,
-        "feels_like": 299.58,
-        "temp_min": 298.39,
-        "temp_max": 298.44,
-        "pressure": 1017,
-        "humidity": 100
-    },
-    "visibility": 9000,
-    "wind": {
-        "speed": 1.03,
-        "deg": 110
-    },
-    "clouds": {
-        "all": 20
-    },
-    "dt": 1691126050,
-    "sys": {
-        "type": 1,
-        "id": 7236,
-        "country": "CU",
-        "sunrise": 1691146877,
-        "sunset": 1691194197
-    },
-    "timezone": -14400,
-    "id": 3553478,
-    "name": "Havana",
-    "cod": 200
+  "coord": {
+    "lon": -82.383,
+    "lat": 23.133
+  },
+  "weather": [
+    {
+      "id": 803,
+      "main": "Clouds",
+      "description": "broken clouds",
+      "icon": "04n"
+    }
+  ],
+  "base": "stations",
+  "main": {
+    "temp": 295.39,
+    "feels_like": 296.28,
+    "temp_min": 295.11,
+    "temp_max": 295.39,
+    "pressure": 1013,
+    "humidity": 100,
+    "sea_level": 1013,
+    "grnd_level": 1007
+  },
+  "visibility": 9000,
+  "wind": {
+    "speed": 1.54,
+    "deg": 0
+  },
+  "clouds": {
+    "all": 75
+  },
+  "dt": 1732162103,
+  "sys": {
+    "type": 1,
+    "id": 7236,
+    "country": "CU",
+    "sunrise": 1732103222,
+    "sunset": 1732142633
+  },
+  "timezone": -18000,
+  "id": 3553478,
+  "name": "Havana",
+  "cod": 200
 }

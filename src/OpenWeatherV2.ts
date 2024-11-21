@@ -1,8 +1,9 @@
-import {assertWeatherDataV2, type CountryCode, type LangCode, type Loadable, type WeatherDataV2} from './types';
+import {assertWeatherDataV2, type CountryCode, type LangCode, type WeatherDataV2} from './types';
 import {Err, type IResult, Ok, safeAsyncResult, safeAsyncResultBuilder} from '@luolapeikko/result-option';
 import {fetchErrorWrapper} from './lib/fetchUtils';
 import {type IAsyncCache} from '@luolapeikko/cache-types';
 import type {IOpenWeatherV2} from './interfaces/IOpenWeatherV2';
+import {type Loadable} from '@luolapeikko/ts-common';
 
 const fetchResult = safeAsyncResultBuilder<Parameters<typeof fetch>, Response, SyntaxError | TypeError>(fetch);
 
@@ -27,17 +28,27 @@ function isOpenWeatherError(data: unknown): data is {cod: string; message: strin
  * @default {lang: 'en', units: 'standard'} in API
  * @example
  * {lang: 'fi', units: 'metric'}
+ * @since v0.0.1
  */
 export type OpenWeatherV2CommonOptions = {
 	/**
 	 * Language code
 	 */
-	lang?: LangCode;
+	lang: LangCode;
 	/**
 	 * Weather units
 	 */
-	units?: 'standard' | 'metric' | 'imperial';
+	units: 'standard' | 'metric' | 'imperial';
 };
+
+const defaultCommonOptions = {
+	lang: 'en',
+	units: 'standard',
+} satisfies OpenWeatherV2CommonOptions;
+
+function buildOpts(opts: Partial<OpenWeatherV2CommonOptions>): OpenWeatherV2CommonOptions {
+	return Object.assign({}, defaultCommonOptions, opts);
+}
 
 const basePath = 'https://api.openweathermap.org/data/2.5/weather';
 
@@ -82,6 +93,12 @@ const defaultImplementation: IOpenWeatherV2 = {
 };
 
 /**
+ * Cache key types
+ * @since v0.1.0
+ */
+type CacheKey = `q:${string}:${string}` | `id:${number}` | `latlon:${number}:${number}`;
+
+/**
  * Open Weather V2 API
  * @example
  * const weather = new OpenWeatherV2('your-api-key');
@@ -103,6 +120,7 @@ const defaultImplementation: IOpenWeatherV2 = {
  * } else {
  *   const err: DOMException | TypeError = data.err();
  * }
+ * @since v0.0.1
  */
 export class OpenWeatherV2 {
 	private cache: IAsyncCache<WeatherDataV2> | undefined;
@@ -124,7 +142,7 @@ export class OpenWeatherV2 {
 	/**
 	 * get weather by Id
 	 * @param {number} id       - Weather station ID
-	 * @param {OpenWeatherV2CommonOptions=} opts - Common options, example ```{lang: 'fi', units: 'metric'}```, defaults ```{lang: 'en', units: 'standard'}```
+	 * @param {OpenWeatherV2CommonOptions=} currentOpts - Common options, example ```{lang: 'fi', units: 'metric'}```, defaults ```{lang: 'en', units: 'standard'}```
 	 * @return {Promise<Result<WeatherDataV2, DOMException | TypeError>>} Weather data Result Promise
 	 * @example
 	 * const result: Result<WeatherDataV2, DOMException | TypeError> = await weather.getWeatherResultById(id: 564, {lang: 'fi'});
@@ -134,8 +152,9 @@ export class OpenWeatherV2 {
 	 *   const error: DOMException | TypeError = result.err();
 	 * }
 	 */
-	public async getWeatherById(id: number, opts: OpenWeatherV2CommonOptions = {}): Promise<IResult<WeatherDataV2, DOMException | TypeError>> {
+	public async getWeatherById(id: number, currentOpts: Partial<OpenWeatherV2CommonOptions> = {}): Promise<IResult<WeatherDataV2, DOMException | TypeError>> {
 		try {
+			const opts = buildOpts(currentOpts);
 			const cacheKey = this.buildBaseCacheKey(`id:${id}`, opts);
 			let cacheEntry = this.cache && (await this.cache.get(cacheKey));
 			if (!cacheEntry) {
@@ -153,7 +172,7 @@ export class OpenWeatherV2 {
 	 * get weather with city name and optional country code
 	 * @param {string} city       - City name
 	 * @param {countryCode=} countryCode       - Optional Country code
-	 * @param {OpenWeatherV2CommonOptions=} opts - Common options, example ```{lang: 'fi', units: 'metric'}```, defaults ```{lang: 'en', units: 'standard'}```
+	 * @param {OpenWeatherV2CommonOptions=} currentOpts - Common options, example ```{lang: 'fi', units: 'metric'}```, defaults ```{lang: 'en', units: 'standard'}```
 	 * @return {Promise<Result<WeatherDataV2, DOMException | TypeError>>} Weather data Result Promise
 	 * @example
 	 * const result: Result<WeatherDataV2, DOMException | TypeError> = await weather.getWeatherByCity('Helsinki', 'fi', {lang: 'fi'});
@@ -166,9 +185,10 @@ export class OpenWeatherV2 {
 	public async getWeatherByCity(
 		city: string,
 		countryCode?: CountryCode,
-		opts: OpenWeatherV2CommonOptions = {},
+		currentOpts: Partial<OpenWeatherV2CommonOptions> = {},
 	): Promise<IResult<WeatherDataV2, DOMException | TypeError>> {
 		try {
+			const opts = buildOpts(currentOpts);
 			const cacheKey = this.buildBaseCacheKey(`q:${city}:${countryCode}`, opts);
 			let cacheEntry = this.cache && (await this.cache.get(cacheKey));
 			if (!cacheEntry) {
@@ -186,7 +206,7 @@ export class OpenWeatherV2 {
 	 * get weather with latitude and longitude with Result
 	 * @param {number} lat       - Latitude
 	 * @param {number} lon       - Longitude
-	 * @param {OpenWeatherV2CommonOptions=} opts - Common options, example ```{lang: 'fi', units: 'metric'}```, defaults ```{lang: 'en', units: 'standard'}```
+	 * @param {OpenWeatherV2CommonOptions=} currentOpts - Common options, example ```{lang: 'fi', units: 'metric'}```, defaults ```{lang: 'en', units: 'standard'}```
 	 * @return {Promise<Result<WeatherDataV2, DOMException | TypeError>>} Weather data Result Promise
 	 * @example
 	 * const result: Result<WeatherDataV2, DOMException | TypeError> = await weather.getWeatherByLatLon(60.1699, 24.9384, {lang: 'fi'});
@@ -196,8 +216,13 @@ export class OpenWeatherV2 {
 	 *   const error: DOMException | TypeError = result.err();
 	 * }
 	 */
-	public async getWeatherByLatLon(lat: number, lon: number, opts: OpenWeatherV2CommonOptions = {}): Promise<IResult<WeatherDataV2, DOMException | TypeError>> {
+	public async getWeatherByLatLon(
+		lat: number,
+		lon: number,
+		currentOpts: Partial<OpenWeatherV2CommonOptions> = {},
+	): Promise<IResult<WeatherDataV2, DOMException | TypeError>> {
 		try {
+			const opts = buildOpts(currentOpts);
 			const cacheKey = this.buildBaseCacheKey(`latlon:${lat}:${lon}`, opts);
 			let cacheEntry = this.cache && (await this.cache.get(cacheKey));
 			if (!cacheEntry) {
@@ -223,9 +248,9 @@ export class OpenWeatherV2 {
 	 * build base cache key
 	 * @param main - main cache key prefix
 	 * @param opts -  OpenWeatherV2CommonOptions
-	 * @returns {CacheKey}
+	 * @returns {string} cache key
 	 */
-	private buildBaseCacheKey(main: string, {lang, units}: OpenWeatherV2CommonOptions): string {
+	private buildBaseCacheKey(main: CacheKey, {lang, units}: OpenWeatherV2CommonOptions): `${CacheKey}:${LangCode}:${'standard' | 'metric' | 'imperial'}` {
 		return `${main}:${lang}:${units}`;
 	}
 
