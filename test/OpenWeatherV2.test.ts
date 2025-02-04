@@ -1,8 +1,8 @@
-import {beforeEach, describe, expect, it} from 'vitest';
-import {isWeatherDataV2, OpenWeatherV2, type WeatherDataV2, weatherDataV2Schema} from '../src/';
-import {unitTestApiV2, unitTestData} from './lib/unitTestApi';
 import {ExpireCache} from '@avanio/expire-cache';
 import {type IResult} from '@luolapeikko/result-option';
+import {beforeEach, describe, expect, it} from 'vitest';
+import {isWeatherDataV2, OpenWeatherV2, type WeatherDataV2, weatherDataV2Schema} from '../src';
+import {unitTestApiV2, unitTestData} from './lib/unitTestApi';
 
 let weather: OpenWeatherV2;
 const cache = new ExpireCache<WeatherDataV2>(undefined, undefined, 900000); // 15 minutes in cache

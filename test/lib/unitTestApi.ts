@@ -1,8 +1,8 @@
 /* eslint-disable sort-keys */
-import {assertWeatherDataV2, type WeatherDataV2} from '../../src/types/v2';
+import {readFile} from 'fs/promises';
 import {Err, Ok} from '@luolapeikko/result-option';
 import {type IOpenWeatherV2} from '../../src/interfaces/IOpenWeatherV2';
-import {readFile} from 'fs/promises';
+import {assertWeatherDataV2, type WeatherDataV2} from '../../src/types/v2';
 
 export const unitTestData = {
 	coord: {lon: -0.1257, lat: 51.5085},

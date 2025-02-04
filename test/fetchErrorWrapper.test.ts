@@ -1,6 +1,5 @@
-/* eslint-disable sonarjs/no-duplicate-string */
 import {describe, expect, it} from 'vitest';
-import {fetchErrorWrapper} from '../src/';
+import {fetchErrorWrapper} from '../src';
 
 describe('fetchErrorWrapper', () => {
 	it('should get valid error types', () => {

@@ -1,6 +1,5 @@
-/* eslint-disable sonarjs/no-duplicate-string */
 import {describe, expect, it} from 'vitest';
-import {getWeatherV2Description} from '../src/';
+import {getWeatherV2Description} from '../src';
 
 describe('weather groups', () => {
 	it('should get weather type key from number', () => {

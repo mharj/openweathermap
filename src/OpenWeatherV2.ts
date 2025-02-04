@@ -1,9 +1,9 @@
-import {assertWeatherDataV2, type CountryCode, type LangCode, type WeatherDataV2} from './types';
-import {Err, type IResult, Ok, safeAsyncResult, safeAsyncResultBuilder} from '@luolapeikko/result-option';
-import {fetchErrorWrapper} from './lib/fetchUtils';
 import {type IAsyncCache} from '@luolapeikko/cache-types';
-import type {IOpenWeatherV2} from './interfaces/IOpenWeatherV2';
+import {Err, type IResult, Ok, safeAsyncResult, safeAsyncResultBuilder} from '@luolapeikko/result-option';
 import {type Loadable} from '@luolapeikko/ts-common';
+import type {IOpenWeatherV2} from './interfaces/IOpenWeatherV2';
+import {fetchErrorWrapper} from './lib/fetchUtils';
+import {assertWeatherDataV2, type CountryCode, type LangCode, type WeatherDataV2} from './types';
 
 const fetchResult = safeAsyncResultBuilder<Parameters<typeof fetch>, Response, SyntaxError | TypeError>(fetch);
 

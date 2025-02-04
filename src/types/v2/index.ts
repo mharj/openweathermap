@@ -1,6 +1,6 @@
+import {z} from 'zod';
 import {iconSchema} from './Icon';
 import {weatherIdSchema} from './weatherIdGroup';
-import {z} from 'zod';
 export * from './Icon';
 export * from './Language';
 export * from './weatherIdGroup';
