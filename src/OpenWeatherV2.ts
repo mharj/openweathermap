@@ -16,7 +16,7 @@ function toParams(data: Record<string, string | number | boolean>): Record<strin
 
 function isJson(response: Response): boolean {
 	const contentType = response.headers.get('content-type');
-	return (contentType && contentType.startsWith('application/json')) || false;
+	return contentType?.startsWith('application/json') ?? false;
 }
 
 function isOpenWeatherError(data: unknown): data is {cod: string; message: string} {
