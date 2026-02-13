@@ -1,11 +1,11 @@
 import {type IAsyncCache} from '@luolapeikko/cache-types';
-import {Err, type IResult, Ok, safeAsyncResult, safeAsyncResultBuilder} from '@luolapeikko/result-option';
+import {Err, type IResult, Ok, Result} from '@luolapeikko/result-option';
 import {type Loadable} from '@luolapeikko/ts-common';
 import type {IOpenWeatherV2} from './interfaces/IOpenWeatherV2';
 import {fetchErrorWrapper} from './lib/fetchUtils';
 import {assertWeatherDataV2, type CountryCode, type LangCode, type WeatherDataV2} from './types';
 
-const fetchResult = safeAsyncResultBuilder<Parameters<typeof fetch>, Response, SyntaxError | TypeError>(fetch);
+const fetchResult = Result.wrapAsyncFn<SyntaxError | TypeError, typeof fetch>(fetch);
 
 function toParams(data: Record<string, string | number | boolean>): Record<string, string> {
 	return Object.entries(data).reduce<Record<string, string>>((acc, [key, value]) => {
@@ -82,7 +82,7 @@ const defaultImplementation: IOpenWeatherV2 = {
 		if (!isJson(res)) {
 			return Err(new TypeError(`OpenWeatherV2 response is not json payload from ${logUrl}`));
 		}
-		const jsonResult = await safeAsyncResult<unknown, SyntaxError>(res.json());
+		const jsonResult = await Result.safeAsyncCall<unknown, SyntaxError>(() => res.json());
 		if (!jsonResult.isOk) {
 			return Err(jsonResult.err());
 		}
