@@ -27,12 +27,5 @@
     "types": ["node"]
   },
   "exclude": ["node_modules", "**/*.spec.ts", "test"],
-  "include": ["src/**/*", "src/**/**/*"],
-  "typedocOptions": {
-    "entryPoints": ["src/index.ts"],
-    "excludeInternal": true,
-    "excludePrivate": true,
-    "out": "docs",
-    "plugin": ["typedoc-plugin-zod"]
-  }
+  "include": ["src/**/*", "src/**/**/*"]
 }

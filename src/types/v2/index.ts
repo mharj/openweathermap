@@ -52,7 +52,9 @@ const sysSchema = z.object({
 	type: z.number().optional(),
 });
 
-const weatherDataV2SchemaInternal: z.ZodObject<
+export type WeatherDataV2 = z.infer<typeof weatherDataV2Schema>;
+
+export const weatherDataV2Schema: z.ZodObject<
 	{
 		base: z.ZodString;
 		clouds: z.ZodObject<
@@ -284,10 +286,6 @@ const weatherDataV2SchemaInternal: z.ZodObject<
 	weather: z.array(weatherSchema),
 	wind: windSchema,
 });
-
-export type WeatherDataV2 = z.infer<typeof weatherDataV2SchemaInternal>;
-
-export const weatherDataV2Schema: z.ZodType<WeatherDataV2> = weatherDataV2SchemaInternal;
 
 export function isWeatherDataV2(data: unknown): data is WeatherDataV2 {
 	return weatherDataV2Schema.safeParse(data).success;
