@@ -1,45 +1,45 @@
 {
-  "coord": {
-    "lon": -0.1257,
-    "lat": 51.5085
-  },
-  "weather": [
-    {
-      "id": 804,
-      "main": "Clouds",
-      "description": "overcast clouds",
-      "icon": "04n"
-    }
-  ],
   "base": "stations",
-  "main": {
-    "temp": 272.8,
-    "feels_like": 269.64,
-    "temp_min": 271.31,
-    "temp_max": 274.01,
-    "pressure": 1006,
-    "humidity": 88,
-    "sea_level": 1006,
-    "grnd_level": 1002
-  },
-  "visibility": 10000,
-  "wind": {
-    "speed": 2.57,
-    "deg": 220
-  },
   "clouds": {
     "all": 100
   },
+  "cod": 200,
+  "coord": {
+    "lat": 51.5085,
+    "lon": -0.1257
+  },
   "dt": 1732161944,
+  "id": 2643743,
+  "main": {
+    "feels_like": 269.64,
+    "grnd_level": 1002,
+    "humidity": 88,
+    "pressure": 1006,
+    "sea_level": 1006,
+    "temp": 272.8,
+    "temp_max": 274.01,
+    "temp_min": 271.31
+  },
+  "name": "London",
   "sys": {
-    "type": 2,
-    "id": 2091269,
     "country": "GB",
+    "id": 2091269,
     "sunrise": 1732174157,
-    "sunset": 1732205039
+    "sunset": 1732205039,
+    "type": 2
   },
   "timezone": 0,
-  "id": 2643743,
-  "name": "London",
-  "cod": 200
+  "visibility": 10000,
+  "weather": [
+    {
+      "description": "overcast clouds",
+      "icon": "04n",
+      "id": 804,
+      "main": "Clouds"
+    }
+  ],
+  "wind": {
+    "deg": 220,
+    "speed": 2.57
+  }
 }

@@ -251,8 +251,8 @@ export const CountryCodeList = [
 	'zm',
 	'zw',
 ] as const;
+export type CountryCode = (typeof CountryCodeList)[number];
 /**
  * @internal
  */
-export const CountryCodeSchema = z.enum(CountryCodeList);
-export type CountryCode = z.infer<typeof CountryCodeSchema>;
+export const CountryCodeSchema: z.ZodEnum<Record<CountryCode, CountryCode>> = z.enum(CountryCodeList);

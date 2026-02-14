@@ -1,4 +1,4 @@
-import {type IOption, Option} from '@luolapeikko/result-option';
+import {type IOption, None, Some} from '@luolapeikko/result-option';
 import {z} from 'zod';
 
 /**
@@ -6,279 +6,279 @@ import {z} from 'zod';
  */
 export const weatherIdGroup = [
 	{
-		id: 200,
-		group: 'thunderstorm',
 		description: 'thunderstorm_with_light_rain',
+		group: 'thunderstorm',
+		id: 200,
 	},
 	{
-		id: 201,
-		group: 'thunderstorm',
 		description: 'thunderstorm_with_rain',
+		group: 'thunderstorm',
+		id: 201,
 	},
 	{
-		id: 202,
-		group: 'thunderstorm',
 		description: 'thunderstorm_with_heavy_rain',
+		group: 'thunderstorm',
+		id: 202,
 	},
 	{
-		id: 210,
-		group: 'thunderstorm',
 		description: 'light_thunderstorm',
+		group: 'thunderstorm',
+		id: 210,
 	},
 	{
-		id: 211,
-		group: 'thunderstorm',
 		description: 'thunderstorm',
+		group: 'thunderstorm',
+		id: 211,
 	},
 	{
-		id: 212,
-		group: 'thunderstorm',
 		description: 'heavy_thunderstorm',
+		group: 'thunderstorm',
+		id: 212,
 	},
 	{
-		id: 221,
-		group: 'thunderstorm',
 		description: 'ragged_thunderstorm',
+		group: 'thunderstorm',
+		id: 221,
 	},
 	{
-		id: 230,
-		group: 'thunderstorm',
 		description: 'thunderstorm_with_light_drizzle',
+		group: 'thunderstorm',
+		id: 230,
 	},
 	{
-		id: 231,
-		group: 'thunderstorm',
 		description: 'thunderstorm_with_drizzle',
-	},
-	{
-		id: 232,
 		group: 'thunderstorm',
+		id: 231,
+	},
+	{
 		description: 'thunderstorm_with_heavy_drizzle',
+		group: 'thunderstorm',
+		id: 232,
 	},
 	{
-		id: 300,
-		group: 'drizzle',
 		description: 'light_intensity_drizzle',
+		group: 'drizzle',
+		id: 300,
 	},
 	{
-		id: 301,
-		group: 'drizzle',
 		description: 'drizzle',
+		group: 'drizzle',
+		id: 301,
 	},
 	{
-		id: 302,
-		group: 'drizzle',
 		description: 'heavy_intensity_drizzle',
+		group: 'drizzle',
+		id: 302,
 	},
 	{
-		id: 310,
-		group: 'drizzle',
 		description: 'light_intensity_drizzle_rain',
+		group: 'drizzle',
+		id: 310,
 	},
 	{
-		id: 311,
-		group: 'drizzle',
 		description: 'drizzle_rain',
+		group: 'drizzle',
+		id: 311,
 	},
 	{
-		id: 312,
-		group: 'drizzle',
 		description: 'heavy_intensity_drizzle_rain',
+		group: 'drizzle',
+		id: 312,
 	},
 	{
-		id: 313,
-		group: 'drizzle',
 		description: 'shower_rain_and_drizzle',
+		group: 'drizzle',
+		id: 313,
 	},
 	{
-		id: 314,
-		group: 'drizzle',
 		description: 'heavy_shower_rain_and_drizzle',
-	},
-	{
-		id: 321,
 		group: 'drizzle',
+		id: 314,
+	},
+	{
 		description: 'shower_drizzle',
+		group: 'drizzle',
+		id: 321,
 	},
 	{
-		id: 500,
-		group: 'rain',
 		description: 'light_rain',
+		group: 'rain',
+		id: 500,
 	},
 	{
-		id: 501,
-		group: 'rain',
 		description: 'moderate_rain',
+		group: 'rain',
+		id: 501,
 	},
 	{
-		id: 502,
-		group: 'rain',
 		description: 'heavy_intensity_rain',
+		group: 'rain',
+		id: 502,
 	},
 	{
-		id: 503,
-		group: 'rain',
 		description: 'very_heavy_rain',
+		group: 'rain',
+		id: 503,
 	},
 	{
-		id: 504,
-		group: 'rain',
 		description: 'extreme_rain',
+		group: 'rain',
+		id: 504,
 	},
 	{
-		id: 511,
-		group: 'rain',
 		description: 'freezing_rain',
+		group: 'rain',
+		id: 511,
 	},
 	{
-		id: 520,
-		group: 'rain',
 		description: 'light_intensity_shower_rain',
+		group: 'rain',
+		id: 520,
 	},
 	{
-		id: 521,
-		group: 'rain',
 		description: 'shower_rain',
+		group: 'rain',
+		id: 521,
 	},
 	{
-		id: 522,
-		group: 'rain',
 		description: 'heavy_intensity_shower_rain',
-	},
-	{
-		id: 531,
 		group: 'rain',
+		id: 522,
+	},
+	{
 		description: 'ragged_shower_rain',
+		group: 'rain',
+		id: 531,
 	},
 	{
-		id: 600,
-		group: 'snow',
 		description: 'light_snow',
+		group: 'snow',
+		id: 600,
 	},
 	{
-		id: 601,
-		group: 'snow',
 		description: 'snow',
+		group: 'snow',
+		id: 601,
 	},
 	{
-		id: 602,
-		group: 'snow',
 		description: 'heavy_snow',
+		group: 'snow',
+		id: 602,
 	},
 	{
-		id: 611,
-		group: 'snow',
 		description: 'sleet',
+		group: 'snow',
+		id: 611,
 	},
 	{
-		id: 612,
-		group: 'snow',
 		description: 'light_shower_sleet',
+		group: 'snow',
+		id: 612,
 	},
 	{
-		id: 613,
-		group: 'snow',
 		description: 'shower_sleet',
+		group: 'snow',
+		id: 613,
 	},
 	{
-		id: 615,
-		group: 'snow',
 		description: 'light_rain_and_snow',
+		group: 'snow',
+		id: 615,
 	},
 	{
-		id: 616,
-		group: 'snow',
 		description: 'rain_and_snow',
+		group: 'snow',
+		id: 616,
 	},
 	{
-		id: 620,
-		group: 'snow',
 		description: 'light_shower_snow',
+		group: 'snow',
+		id: 620,
 	},
 	{
-		id: 621,
-		group: 'snow',
 		description: 'shower_snow',
-	},
-	{
-		id: 622,
 		group: 'snow',
+		id: 621,
+	},
+	{
 		description: 'heavy_shower_snow',
+		group: 'snow',
+		id: 622,
 	},
 	{
-		id: 701,
-		group: 'atmosphere',
 		description: 'mist',
+		group: 'atmosphere',
+		id: 701,
 	},
 	{
-		id: 711,
-		group: 'atmosphere',
 		description: 'smoke',
+		group: 'atmosphere',
+		id: 711,
 	},
 	{
-		id: 721,
-		group: 'atmosphere',
 		description: 'haze',
+		group: 'atmosphere',
+		id: 721,
 	},
 	{
-		id: 731,
-		group: 'atmosphere',
 		description: 'sand_dust_whirls',
+		group: 'atmosphere',
+		id: 731,
 	},
 	{
-		id: 741,
-		group: 'atmosphere',
 		description: 'fog',
+		group: 'atmosphere',
+		id: 741,
 	},
 	{
-		id: 751,
-		group: 'atmosphere',
 		description: 'sand',
+		group: 'atmosphere',
+		id: 751,
 	},
 	{
-		id: 761,
-		group: 'atmosphere',
 		description: 'dust',
+		group: 'atmosphere',
+		id: 761,
 	},
 	{
-		id: 762,
-		group: 'atmosphere',
 		description: 'volcanic_ash',
+		group: 'atmosphere',
+		id: 762,
 	},
 	{
-		id: 771,
-		group: 'atmosphere',
 		description: 'squalls',
-	},
-	{
-		id: 781,
 		group: 'atmosphere',
+		id: 771,
+	},
+	{
 		description: 'tornado',
+		group: 'atmosphere',
+		id: 781,
 	},
 	{
-		id: 800,
-		group: 'clear',
 		description: 'clear_sky',
+		group: 'clear',
+		id: 800,
 	},
 	{
-		id: 801,
-		group: 'clouds',
 		description: 'few_clouds_11-25_percent',
+		group: 'clouds',
+		id: 801,
 	},
 	{
-		id: 802,
-		group: 'clouds',
 		description: 'scattered_clouds_25-50_percent',
+		group: 'clouds',
+		id: 802,
 	},
 	{
-		id: 803,
-		group: 'clouds',
 		description: 'broken_clouds_51-84_percent',
+		group: 'clouds',
+		id: 803,
 	},
 	{
-		id: 804,
-		group: 'clouds',
 		description: 'overcast_clouds_85-100_percent',
+		group: 'clouds',
+		id: 804,
 	},
 ] as const;
 
@@ -305,7 +305,7 @@ export type WeatherDescription = (typeof weatherIdGroup)[number]['description'];
  * Weather id schema
  * @internal
  */
-export const weatherIdSchema = z.custom<WeatherID>((val) => {
+export const weatherIdSchema: z.ZodType<WeatherID> = z.custom<WeatherID>((val) => {
 	if (typeof val !== 'number') {
 		return {message: 'Expected a number', success: false};
 	}
@@ -330,5 +330,6 @@ export const weatherIdSchema = z.custom<WeatherID>((val) => {
  * }
  */
 export function getWeatherV2Description(id: WeatherID | undefined): IOption<WeatherDescription> {
-	return Option.fromNullish(weatherIdGroup.find((x) => x.id === id)?.description);
+	const description = id ? weatherIdGroup.find((x) => x.id === id)?.description : undefined;
+	return description ? Some(description) : None();
 }

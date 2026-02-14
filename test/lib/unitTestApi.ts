@@ -1,44 +1,43 @@
-/* eslint-disable sort-keys */
-import {readFile} from 'fs/promises';
 import {Err, Ok} from '@luolapeikko/result-option';
-import {type IOpenWeatherV2} from '../../src/interfaces/IOpenWeatherV2';
+import {readFile} from 'fs/promises';
+import type {IOpenWeatherV2} from '../../src/interfaces/IOpenWeatherV2';
 import {assertWeatherDataV2, type WeatherDataV2} from '../../src/types/v2';
 
 export const unitTestData = {
-	coord: {lon: -0.1257, lat: 51.5085},
-	weather: [
-		{
-			id: 803,
-			main: 'Clouds',
-			description: 'broken clouds',
-			icon: '04d',
-		},
-	],
 	base: 'stations',
-	main: {
-		temp: 288.62,
-		feels_like: 288.57,
-		temp_min: 287.2,
-		temp_max: 289.34,
-		pressure: 1002,
-		humidity: 90,
-	},
-	visibility: 10000,
-	wind: {speed: 3.09, deg: 250},
 	clouds: {all: 75},
+	cod: 200,
+	coord: {lat: 51.5085, lon: -0.1257},
 	dt: 1690176942,
+	id: 2643743,
+	main: {
+		feels_like: 288.57,
+		humidity: 90,
+		pressure: 1002,
+		temp: 288.62,
+		temp_max: 289.34,
+		temp_min: 287.2,
+	},
+	name: 'London',
 	sys: {
-		type: 2,
-		id: 2075535,
 		country: 'GB',
+		id: 2075535,
 		sunrise: 1690171914,
 		sunset: 1690228906,
+		type: 2,
 	},
 	timezone: 3600,
-	id: 2643743,
-	name: 'London',
-	cod: 200,
-};
+	visibility: 10000,
+	weather: [
+		{
+			description: 'broken clouds',
+			icon: '04d',
+			id: 803,
+			main: 'Clouds',
+		},
+	],
+	wind: {deg: 250, speed: 3.09},
+} as const;
 
 export const unitTestApiV2: IOpenWeatherV2 = {
 	dataWeatherApi: async (params: URLSearchParams) => {

@@ -1,6 +1,6 @@
-import {type IAsyncCache} from '@luolapeikko/cache-types';
+import type {IAsyncCache} from '@luolapeikko/cache-types';
 import {Err, type IResult, Ok, Result} from '@luolapeikko/result-option';
-import {type Loadable} from '@luolapeikko/ts-common';
+import type {Loadable} from '@luolapeikko/ts-common';
 import type {IOpenWeatherV2} from './interfaces/IOpenWeatherV2';
 import {fetchErrorWrapper} from './lib/fetchUtils';
 import {assertWeatherDataV2, type CountryCode, type LangCode, type WeatherDataV2} from './types';
@@ -133,7 +133,7 @@ export class OpenWeatherV2 {
 	 * @param {ICacheOrAsync<WeatherDataV2>=} cache - optional async cache implementation
 	 * @param {IOpenWeatherV2=} apiHandler - optional API handler implementation for mocking
 	 */
-	constructor(loadableApiKey: Loadable<string>, cache?: IAsyncCache<WeatherDataV2>, apiHandler: IOpenWeatherV2 = defaultImplementation) {
+	public constructor(loadableApiKey: Loadable<string>, cache?: IAsyncCache<WeatherDataV2>, apiHandler: IOpenWeatherV2 = defaultImplementation) {
 		this.loadableApiKey = loadableApiKey;
 		this.cache = cache;
 		this.apiHandler = apiHandler;

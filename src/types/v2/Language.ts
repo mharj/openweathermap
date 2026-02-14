@@ -1,4 +1,5 @@
 import {z} from 'zod';
+
 export const langCodes = [
 	'af',
 	'al',
@@ -47,5 +48,5 @@ export const langCodes = [
 	'zh_tw',
 	'zu',
 ] as const;
-export const langCodeSchema = z.enum(langCodes);
-export type LangCode = z.infer<typeof langCodeSchema>;
+export type LangCode = (typeof langCodes)[number];
+export const langCodeSchema: z.ZodEnum<Record<LangCode, LangCode>> = z.enum(langCodes);
