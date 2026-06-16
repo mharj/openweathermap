@@ -7,7 +7,7 @@ import {unitTestApiV2, unitTestData} from './lib/unitTestApi';
 let weather: OpenWeatherV2;
 const cache = new ExpireCache<WeatherDataV2>(undefined, undefined, 900000); // 15 minutes in cache
 
-const idList = new Set([3553478, 2643743]);
+const idList = new Set([3553478, 2643743, 5128581]);
 
 const defaultKeySuffix = 'en:standard';
 
@@ -16,6 +16,7 @@ const defaultKeySuffix = 'en:standard';
  * $apiKeyValue = '***'
  * $cityId = 3553478
  * $cityId = 2643743
+ * $cityId = 5128581
  * Invoke-RestMethod -Uri "https://api.openweathermap.org/data/2.5/weather?id=$cityId&appid=$apiKeyValue" | ConvertTo-Json | Set-Content -Path "test/lib/data/$cityId.json"
  */
 

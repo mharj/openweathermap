@@ -5,8 +5,15 @@
     "@avanio/logger-like": {
       "ILoggerLike": "https://mharj.github.io/logger-like/interfaces/ILoggerLike.html"
     },
+    "@luolapeikko/cache-types": {
+      "IAsyncCache": "https://luolapeikko.github.io/cache-types/interfaces/IAsyncCache.html"
+    },
     "@luolapeikko/result-option": {
+      "IOption": "https://luolapeikko.github.io/result-option/types/IOption.html",
       "IResult": "https://luolapeikko.github.io/result-option/types/IResult.html"
+    },
+    "@luolapeikko/ts-common": {
+      "Loadable": "https://luolapeikko.github.io/ts-common/types/Loadable.html"
     },
     "core-ts-root": {
       "undefined": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined"

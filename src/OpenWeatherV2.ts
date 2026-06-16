@@ -3,6 +3,7 @@ import {Err, type IResult, Ok, Result} from '@luolapeikko/result-option';
 import type {Loadable} from '@luolapeikko/ts-common';
 import type {IOpenWeatherV2} from './interfaces/IOpenWeatherV2';
 import {fetchErrorWrapper} from './lib/fetchUtils';
+import {zodDataLinkError} from './lib/zodDataLinkError';
 import {assertWeatherDataV2, type CountryCode, type LangCode, type WeatherDataV2} from './types';
 
 const fetchResult = Result.wrapAsyncFn<SyntaxError | TypeError, typeof fetch>(fetch);
@@ -64,31 +65,37 @@ function buildLogUrl(params: URLSearchParams): string {
 
 const defaultImplementation: IOpenWeatherV2 = {
 	dataWeatherApi: async (params: URLSearchParams): Promise<IResult<WeatherDataV2, SyntaxError | TypeError>> => {
-		const logUrl = buildLogUrl(params);
-		const result = await fetchResult(buildUrl(params));
-		if (!result.isOk) {
-			return Err(result.err());
-		}
-		const res = result.ok();
-		if (!res.ok) {
-			if (isJson(res)) {
-				const data: unknown = await res.json();
-				if (isOpenWeatherError(data)) {
-					return Err(new TypeError(`OpenWeatherV2 error: ${data.message} from ${logUrl}`));
-				}
+		let data: unknown;
+		try {
+			const logUrl = buildLogUrl(params);
+			const result = await fetchResult(buildUrl(params));
+			if (!result.isOk) {
+				return Err(result.err());
 			}
-			return Err(new TypeError(`OpenWeatherV2 http error: ${res.status} ${res.statusText} from ${logUrl}`));
+			const res = result.ok();
+			if (!res.ok) {
+				if (isJson(res)) {
+					const data: unknown = await res.json();
+					if (isOpenWeatherError(data)) {
+						return Err(new TypeError(`OpenWeatherV2 error: ${data.message} from ${logUrl}`));
+					}
+				}
+				return Err(new TypeError(`OpenWeatherV2 http error: ${res.status} ${res.statusText} from ${logUrl}`));
+			}
+			if (!isJson(res)) {
+				return Err(new TypeError(`OpenWeatherV2 response is not json payload from ${logUrl}`));
+			}
+			const jsonResult = await Result.safeAsyncCall<unknown, SyntaxError>(() => res.json());
+			if (!jsonResult.isOk) {
+				return Err(jsonResult.err());
+			}
+			data = jsonResult.ok();
+			assertWeatherDataV2(data);
+			return Ok<WeatherDataV2, SyntaxError | TypeError>(data);
+		} catch (err) {
+			zodDataLinkError(err, params.toString(), data);
+			return Err(fetchErrorWrapper(err));
 		}
-		if (!isJson(res)) {
-			return Err(new TypeError(`OpenWeatherV2 response is not json payload from ${logUrl}`));
-		}
-		const jsonResult = await Result.safeAsyncCall<unknown, SyntaxError>(() => res.json());
-		if (!jsonResult.isOk) {
-			return Err(jsonResult.err());
-		}
-		const data = jsonResult.ok();
-		assertWeatherDataV2(data);
-		return Ok<WeatherDataV2, SyntaxError | TypeError>(data);
 	},
 };
 
@@ -130,7 +137,7 @@ export class OpenWeatherV2 {
 	/**
 	 * OpenWeatherV2 constructor
 	 * @param {Loadable<string>} loadableApiKey - Loadable API key
-	 * @param {ICacheOrAsync<WeatherDataV2>=} cache - optional async cache implementation
+	 * @param {IAsyncCache<WeatherDataV2>=} cache - optional async cache implementation
 	 * @param {IOpenWeatherV2=} apiHandler - optional API handler implementation for mocking
 	 */
 	public constructor(loadableApiKey: Loadable<string>, cache?: IAsyncCache<WeatherDataV2>, apiHandler: IOpenWeatherV2 = defaultImplementation) {
@@ -142,8 +149,8 @@ export class OpenWeatherV2 {
 	/**
 	 * get weather by Id
 	 * @param {number} id       - Weather station ID
-	 * @param {OpenWeatherV2CommonOptions=} currentOpts - Common options, example ```{lang: 'fi', units: 'metric'}```, defaults ```{lang: 'en', units: 'standard'}```
-	 * @return {Promise<Result<WeatherDataV2, DOMException | TypeError>>} Weather data Result Promise
+	 * @param {Partial<OpenWeatherV2CommonOptions>=} currentOpts - Common options, example ```{lang: 'fi', units: 'metric'}```, defaults ```{lang: 'en', units: 'standard'}```
+	 * @return {Promise<IResult<WeatherDataV2, DOMException | TypeError>>} Weather data Result Promise
 	 * @example
 	 * const result: Result<WeatherDataV2, DOMException | TypeError> = await weather.getWeatherResultById(id: 564, {lang: 'fi'});
 	 * if (result.isOk) {
@@ -172,10 +179,10 @@ export class OpenWeatherV2 {
 	 * get weather with city name and optional country code
 	 * @param {string} city       - City name
 	 * @param {countryCode=} countryCode       - Optional Country code
-	 * @param {OpenWeatherV2CommonOptions=} currentOpts - Common options, example ```{lang: 'fi', units: 'metric'}```, defaults ```{lang: 'en', units: 'standard'}```
-	 * @return {Promise<Result<WeatherDataV2, DOMException | TypeError>>} Weather data Result Promise
+	 * @param {Partial<OpenWeatherV2CommonOptions>=} currentOpts - Common options, example ```{lang: 'fi', units: 'metric'}```, defaults ```{lang: 'en', units: 'standard'}```
+	 * @return {Promise<IResult<WeatherDataV2, DOMException | TypeError>>} Weather data Result Promise
 	 * @example
-	 * const result: Result<WeatherDataV2, DOMException | TypeError> = await weather.getWeatherByCity('Helsinki', 'fi', {lang: 'fi'});
+	 * const result: IResult<WeatherDataV2, DOMException | TypeError> = await weather.getWeatherByCity('Helsinki', 'fi', {lang: 'fi'});
 	 * if (result.isOk) {
 	 *   const weatherData: WeatherDataV2 = result.ok();
 	 * } else {
@@ -206,10 +213,10 @@ export class OpenWeatherV2 {
 	 * get weather with latitude and longitude with Result
 	 * @param {number} lat       - Latitude
 	 * @param {number} lon       - Longitude
-	 * @param {OpenWeatherV2CommonOptions=} currentOpts - Common options, example ```{lang: 'fi', units: 'metric'}```, defaults ```{lang: 'en', units: 'standard'}```
-	 * @return {Promise<Result<WeatherDataV2, DOMException | TypeError>>} Weather data Result Promise
+	 * @param {Partial<OpenWeatherV2CommonOptions>=} currentOpts - Common options, example ```{lang: 'fi', units: 'metric'}```, defaults ```{lang: 'en', units: 'standard'}```
+	 * @return {Promise<IResult<WeatherDataV2, DOMException | TypeError>>} Weather data Result Promise
 	 * @example
-	 * const result: Result<WeatherDataV2, DOMException | TypeError> = await weather.getWeatherByLatLon(60.1699, 24.9384, {lang: 'fi'});
+	 * const result: IResult<WeatherDataV2, DOMException | TypeError> = await weather.getWeatherByLatLon(60.1699, 24.9384, {lang: 'fi'});
 	 * if (result.isOk) {
 	 *   const weatherData: WeatherDataV2 = result.ok();
 	 * } else {

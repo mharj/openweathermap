@@ -317,8 +317,8 @@ export const weatherIdSchema: z.ZodType<WeatherID> = z.custom<WeatherID>((val) =
 
 /**
  * get weather description key from weather id
- * @param id - weather id
- * @returns {Option<WeatherDescription>}  option for weather description key
+ * @param {WeatherID | undefined | null} id - weather id
+ * @returns {IOption<WeatherDescription>}  option for weather description key
  * @example
  * const weatherComponent = ({data}) => {
  *   const key = getWeatherV2Description(data.weather[0]?.id).unwrapOr('unknown');
@@ -329,7 +329,7 @@ export const weatherIdSchema: z.ZodType<WeatherID> = z.custom<WeatherID>((val) =
  *   );
  * }
  */
-export function getWeatherV2Description(id: WeatherID | undefined): IOption<WeatherDescription> {
+export function getWeatherV2Description(id: WeatherID | undefined | null): IOption<WeatherDescription> {
 	const description = id ? weatherIdGroup.find((x) => x.id === id)?.description : undefined;
 	return description ? Some(description) : None();
 }

@@ -7,6 +7,8 @@ on:
     paths:
       - "src/**"
       - "README.md"
+      - "typedoc.json"
+      - "package.json"
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 

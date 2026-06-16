@@ -1,51 +1,22 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-  "assist": {
-    "actions": {
-      "source": {
-        "organizeImports": "on",
-        "useSortedKeys": "on"
-      }
-    },
-    "enabled": true
-  },
+  "vcs": { "enabled": false, "clientKind": "git", "useIgnoreFile": false },
   "files": {
-    "ignoreUnknown": false,
-    "includes": ["**/*.ts", "**/*.mts", "**/*.json", "!**/package.json", "!**/dist", "!azurite-data", ".cspell.json"]
+    "ignoreUnknown": true,
+    "includes": ["**/*.ts", "**/*.mts", "**/*.json", "!package.json", "!dist", "!test/**/*.json"]
   },
   "formatter": {
-    "attributePosition": "auto",
-    "bracketSameLine": false,
-    "bracketSpacing": true,
     "enabled": true,
-    "expand": "auto",
     "formatWithErrors": false,
     "indentStyle": "tab",
     "indentWidth": 2,
     "lineEnding": "lf",
     "lineWidth": 160,
+    "attributePosition": "auto",
+    "bracketSameLine": false,
+    "bracketSpacing": true,
+    "expand": "auto",
     "useEditorconfig": true
-  },
-  "html": {
-    "formatter": {
-      "selfCloseVoidElements": "always"
-    }
-  },
-  "javascript": {
-    "formatter": {
-      "arrowParentheses": "always",
-      "attributePosition": "auto",
-      "bracketSameLine": false,
-      "bracketSpacing": false,
-      "indentStyle": "tab",
-      "indentWidth": 2,
-      "jsxQuoteStyle": "double",
-      "quoteProperties": "asNeeded",
-      "quoteStyle": "single",
-      "semicolons": "always",
-      "trailingCommas": "all"
-    },
-    "globals": []
   },
   "json": {
     "formatter": {
@@ -97,7 +68,7 @@
         "useValidTypeof": "error",
         "useYield": "error"
       },
-      "recommended": true,
+      "preset": "recommended",
       "style": {
         "noCommonJs": "error",
         "noInferrableTypes": "error",
@@ -130,7 +101,7 @@
         "noDuplicateObjectKeys": "error",
         "noDuplicateParameters": "error",
         "noEmptyBlockStatements": "error",
-        "noExplicitAny": "error",
+        "noExplicitAny": "off",
         "noExtraNonNullAssertion": "error",
         "noFallthroughSwitchClause": "error",
         "noFunctionAssign": "error",
@@ -155,26 +126,43 @@
       }
     }
   },
+  "javascript": {
+    "formatter": {
+      "jsxQuoteStyle": "double",
+      "quoteProperties": "asNeeded",
+      "trailingCommas": "all",
+      "semicolons": "always",
+      "arrowParentheses": "always",
+      "bracketSameLine": false,
+      "quoteStyle": "single",
+      "attributePosition": "auto",
+      "bracketSpacing": false
+    }
+  },
+  "html": { "formatter": { "selfCloseVoidElements": "always" } },
+  "assist": {
+    "enabled": true,
+    "actions": { "source": { "organizeImports": "on" } }
+  },
   "overrides": [
     {
-      "includes": ["**/*.test.ts"],
+      "includes": ["**/*.test.ts", "**/*.test-d.ts", "**/example.ts"],
       "linter": {
         "rules": {
           "style": {
-            "noCommonJs": "off",
-            "useConsistentMemberAccessibility": "off"
+            "noNonNullAssertion": "off"
           },
           "suspicious": {
-            "noEmptyBlockStatements": "off",
             "noExplicitAny": "off"
+          },
+          "complexity": {
+            "noForEach": "off"
+          },
+          "correctness": {
+            "noUnusedVariables": "off"
           }
         }
       }
     }
-  ],
-  "vcs": {
-    "clientKind": "git",
-    "enabled": false,
-    "useIgnoreFile": false
-  }
+  ]
 }

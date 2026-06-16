@@ -46,8 +46,9 @@ export const unitTestApiV2: IOpenWeatherV2 = {
 			assertWeatherDataV2(unitTestData);
 			return Ok<WeatherDataV2, SyntaxError | TypeError>(unitTestData);
 		}
+		let data: unknown;
 		try {
-			const data: unknown = JSON.parse((await readFile(`./test/lib/data/${id}.json`, {encoding: 'utf-8'})).toString());
+			data = JSON.parse((await readFile(`./test/lib/data/${id}.json`, {encoding: 'utf-8'})).toString());
 			assertWeatherDataV2(data);
 			return Ok<WeatherDataV2, SyntaxError | TypeError>(data);
 		} catch (err) {
