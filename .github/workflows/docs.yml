@@ -41,7 +41,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
-        run: ${{ env.NPM }} ci
+        run: ${{ env.NPM }} install
 
       - name: Install dependencies
         run: ${{ env.NPM }} run build
