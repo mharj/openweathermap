@@ -35,7 +35,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
-        run: ${{ env.PACKAGE_MANAGER }} ci
+        run: ${{ env.PACKAGE_MANAGER }} install
 
       - name: Run validate
         if: env.HAVE_VALIDATE_SCRIPT == 'true'
