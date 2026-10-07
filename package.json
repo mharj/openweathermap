@@ -39,25 +39,26 @@
   },
   "homepage": "https://github.com/mharj/ts-openweather#readme",
   "devDependencies": {
-    "@avanio/expire-cache": "^0.6.10",
-    "@avanio/logger-like": "^0.2.12",
-    "@biomejs/biome": "2.5.0",
+    "@avanio/expire-cache": "^0.7.0",
+    "@avanio/logger-like": "^0.2.13",
+    "@biomejs/biome": "^2.5.15",
     "@luolapeikko/cache-types": "^0.0.10",
-    "@luolapeikko/result-option": "^2.2.3",
+    "@luolapeikko/result-option": "^2.4.0",
     "@luolapeikko/ts-common": "^1.1.6",
-    "@types/node": "^24.13.2",
-    "@typescript/native-preview": "7.0.0-dev.20260615.1",
-    "@vitest/coverage-v8": "^4.1.9",
-    "c8": "^11.0.0",
+    "@types/node": "^24.19.1",
+    "@typescript/native-preview": "7.0.0-dev.20260707.2",
+    "@vitest/coverage-v8": "^5.0.3",
+    "c8": "^12.0.0",
     "source-map-support": "^0.5.21",
-    "tsdown": "^0.22.2",
+    "tsdown": "^0.23.0",
     "tslib": "^2.8.1",
-    "typedoc": "^0.28.19",
-    "typedoc-plugin-dt-links": "^2.0.59",
+    "typedoc": "^0.28.20",
+    "typedoc-plugin-dt-links": "^2.0.75",
     "typedoc-plugin-mdn-links": "^5.1.1",
     "typedoc-plugin-zod": "^1.4.3",
-    "vitest": "^4.1.9",
-    "zod": "^4.4.3"
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.3",
+    "zod": "^4.6.5"
   },
   "peerDependencies": {
     "@luolapeikko/cache-types": "^0.0",
@@ -65,5 +66,5 @@
     "@luolapeikko/ts-common": ">= 0.0.1",
     "zod": "^4"
   },
-  "packageManager": "pnpm@10.29.3+sha512.498e1fb4cca5aa06c1dcf2611e6fafc50972ffe7189998c409e90de74566444298ffe43e6cd2acdc775ba1aa7cc5e092a8b7054c811ba8c5770f84693d33d2dc"
+  "packageManager": "pnpm@12.9.1+sha512.06b055fff5cd20dc12781de173ced3310ce0951bf2ec620211a16045d5444d5c93a663210764ef29a653a610459ba0368f0e74f84d80c54723cf95aae7bc0d6d"
 }
